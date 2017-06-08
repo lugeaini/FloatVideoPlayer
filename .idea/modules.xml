@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FloatVidewPlayer.iml" filepath="$PROJECT_DIR$/FloatVidewPlayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/demo_video.iml" filepath="$PROJECT_DIR$/app/demo_video.iml" />
+    </modules>
+  </component>
+</project>
