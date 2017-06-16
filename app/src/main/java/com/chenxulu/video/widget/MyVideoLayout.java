@@ -3,7 +3,6 @@ package com.chenxulu.video.widget;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,8 @@ import com.chenxulu.video.util.TimeUtil;
 /**
  * Created by xulu on 16/5/6.
  */
-public class MyVideoLayout extends FrameLayout implements View.OnClickListener, MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, CustomMediaController.HideCallBack {
+public class MyVideoLayout extends FrameLayout implements View.OnClickListener,
+        MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, CustomMediaController.HideCallBack {
     private static final int VIDEO_STATE_IDLE = 0;
     private static final int VIDEO_STATE_PREPARE = 1;
     private static final int VIDEO_STATE_PLAYING = 2;
@@ -120,8 +119,7 @@ public class MyVideoLayout extends FrameLayout implements View.OnClickListener, 
 
         closeView.setVisibility(screenType == SCREEN_DEFAULT ? INVISIBLE : VISIBLE);
         bottomLayout.setVisibility(screenType == SCREEN_SMALL ? INVISIBLE : VISIBLE);
-        fullScreenView.setImageResource(screenType == SCREEN_FULL ?
-                R.drawable.btn_video_to_window_selector : R.drawable.btn_video_to_screen_selector);
+        fullScreenView.setImageResource(screenType == SCREEN_FULL ? R.drawable.btn_video_to_window_selector : R.drawable.btn_video_to_screen_selector);
         setClickable(screenType != SCREEN_SMALL);
     }
 

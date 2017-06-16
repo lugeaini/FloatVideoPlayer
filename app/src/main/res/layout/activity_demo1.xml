@@ -8,12 +8,10 @@
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="56dp">
-
-    </ListView>
+        android:layout_marginTop="56dp"/>
 
     <com.chenxulu.video.widget.MyVideoLayout
-        android:id="@+id/video_player"
+        android:id="@+id/video_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

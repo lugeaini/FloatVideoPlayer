@@ -43,7 +43,7 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
         this.myVideoLayout = videoLayout;
         this.listView = listView;
         this.hideView = hideView;
-        this.initView();
+        initView();
     }
 
     private void initView() {
