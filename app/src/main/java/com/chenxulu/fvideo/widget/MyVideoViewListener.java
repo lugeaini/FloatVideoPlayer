@@ -1,9 +1,9 @@
-package com.chenxulu.video.widget;
+package com.chenxulu.fvideo.widget;
 
 /**
  * Created by xulu on 16/7/6.
  */
-public interface MyVideoLayoutListener {
+public interface MyVideoViewListener {
     void fullScreenChange();
 
     void onError();

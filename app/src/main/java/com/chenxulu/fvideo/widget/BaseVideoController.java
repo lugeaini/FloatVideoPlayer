@@ -1,29 +1,24 @@
-package com.chenxulu.video.demo1;
+package com.chenxulu.fvideo.widget;
 
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.chenxulu.video.widget.MyVideoLayout;
-import com.chenxulu.video.widget.MyVideoLayoutListener;
-
 /**
- * Created by xulu on 16/5/10.
+ * Created by xulu on 2017/6/26.
  */
-public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideoLayoutListener, View.OnTouchListener {
+
+public abstract class BaseVideoController implements MyVideoViewListener, View.OnTouchListener {
     private static final int SCREEN_DEFAULT = 0;
     private static final int SCREEN_SMALL = 1;
     private static final int SCREEN_FULL = 2;
 
     private static final float VIDEO_SCALE = 1.77f;
 
-    private MyVideoLayout myVideoLayout;
+    private MyVideoView myVideoLayout;
     private View hideView;
-    private ListView listView;
 
     private int screenType;
 
@@ -36,12 +31,10 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
 
     /**
      * @param videoLayout
-     * @param listView
      * @param hideView
      */
-    public MyVideoController1(MyVideoLayout videoLayout, ListView listView, View hideView) {
+    public BaseVideoController(MyVideoView videoLayout, View hideView) {
         this.myVideoLayout = videoLayout;
-        this.listView = listView;
         this.hideView = hideView;
         initView();
     }
@@ -53,8 +46,6 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
         myVideoLayout.setVisibility(View.GONE);
         myVideoLayout.setOnTouchListener(this);
         myVideoLayout.setMyVideoLayoutListener(this);
-
-        listView.setOnScrollListener(this);
     }
 
     /**
@@ -120,7 +111,7 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
         layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
         layoutParams.setMargins(0, 0, 0, 0);
         myVideoLayout.setLayoutParams(layoutParams);
-        myVideoLayout.setScreenType(MyVideoLayout.SCREEN_FULL);
+        myVideoLayout.setScreenType(MyVideoView.SCREEN_FULL);
     }
 
     /**
@@ -135,14 +126,11 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
         int[] hideViewLocation = new int[2];
         hideView.getLocationInWindow(hideViewLocation);
 
-        int[] parentLocation = new int[2];
-        ((View) myVideoLayout.getParent()).getLocationInWindow(parentLocation);
-
         layoutParams.leftMargin = hideViewLocation[0];
-        layoutParams.topMargin = hideViewLocation[1] - parentLocation[1];
+        layoutParams.topMargin = hideViewLocation[1] - getParentTopMargin();
 
         myVideoLayout.setLayoutParams(layoutParams);
-        myVideoLayout.setScreenType(MyVideoLayout.SCREEN_DEFAULT);
+        myVideoLayout.setScreenType(MyVideoView.SCREEN_DEFAULT);
     }
 
     /**
@@ -153,37 +141,44 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) myVideoLayout.getLayoutParams();
         layoutParams.width = displayWidth / 2;
         layoutParams.height = (int) (layoutParams.width / VIDEO_SCALE);
-        layoutParams.topMargin = listView.getTop();
+        layoutParams.topMargin = getTopMargin();
         layoutParams.leftMargin = displayWidth - layoutParams.width;
         myVideoLayout.setLayoutParams(layoutParams);
-        myVideoLayout.setScreenType(MyVideoLayout.SCREEN_SMALL);
+        myVideoLayout.setScreenType(MyVideoView.SCREEN_SMALL);
     }
 
     /**
      * if video view to small screen
      */
-    public boolean isSmallScreen() {
-        if (listView.getFirstVisiblePosition() > 0) {
-            return true;
-        }
+    public boolean isInSmallRect() {
         int[] hideViewLocation = new int[2];
         hideView.getLocationInWindow(hideViewLocation);
 
-        int[] listViewLocation = new int[2];
-        listView.getLocationInWindow(listViewLocation);
+        int topMargin = getTopMargin() + getParentTopMargin();
 
-        System.out.println(hideViewLocation[1] + ":" + hideView.getHeight() + ":" + listViewLocation[1]);
-
-        if (hideViewLocation[1] > displayHeight || hideViewLocation[1] - listViewLocation[1] + hideView.getHeight() < 0) {
-            return true;
-        }
-        return false;
+        return hideViewLocation[1] > displayHeight || hideViewLocation[1] + hideView.getHeight() < topMargin;
     }
 
-    @Override
-    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+    /**
+     * 根视图的居上距离，大部分情况等同于状态栏的高度
+     *
+     * @return
+     */
+    protected int getParentTopMargin() {
+        int[] parentLocation = new int[2];
+        ((View) myVideoLayout.getParent()).getLocationInWindow(parentLocation);
+        return parentLocation[1];
+    }
+
+    /**
+     * @return
+     */
+    protected abstract int getTopMargin();
+
+
+    public void onScroll() {
         if (screenType != SCREEN_FULL && myVideoLayout.getVisibility() == View.VISIBLE) {
-            if (isSmallScreen()) {
+            if (isInSmallRect()) {
                 if (screenType != SCREEN_SMALL) {
                     setSmallScreen();
                 }
@@ -191,12 +186,6 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
                 setDefaultScreen();
             }
         }
-    }
-
-
-    @Override
-    public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-
     }
 
     @Override
@@ -220,7 +209,7 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
                 int right = (int) (v.getRight() + dx);
                 int bottom = (int) (v.getBottom() + dy);
 
-                if (left > 0 && right < displayWidth && top > listView.getTop() && bottom < displayHeight) {
+                if (left > 0 && right < displayWidth && top > getTopMargin() && bottom < displayHeight) {
                     ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) myVideoLayout.getLayoutParams();
                     layoutParams.topMargin += dy;
                     layoutParams.leftMargin += dx;
@@ -239,7 +228,7 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
     @Override
     public void fullScreenChange() {
         if (screenType == SCREEN_FULL) {
-            if (isSmallScreen()) {
+            if (isInSmallRect()) {
                 setSmallScreen();
             } else {
                 setDefaultScreen();
@@ -260,7 +249,7 @@ public class MyVideoController1 implements AbsListView.OnScrollListener, MyVideo
         displayWidth = myVideoLayout.getResources().getDisplayMetrics().widthPixels;
         displayHeight = myVideoLayout.getResources().getDisplayMetrics().heightPixels;
         if (screenType != SCREEN_FULL) {
-            if (isSmallScreen()) {
+            if (isInSmallRect()) {
                 setSmallScreen();
             } else {
                 setDefaultScreen();

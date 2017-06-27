@@ -1,4 +1,4 @@
-package com.chenxulu.video.demo1;
+package com.chenxulu.fvideo;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,10 @@ import java.util.ArrayList;
 /**
  * Created by xulu on 16/5/12.
  */
-public class MyAdapter1 extends BaseAdapter {
+public class MyAdapter extends BaseAdapter {
     private ArrayList<Integer> list;
 
-    public MyAdapter1(ArrayList<Integer> list) {
+    public MyAdapter(ArrayList<Integer> list) {
         this.list = list;
     }
 

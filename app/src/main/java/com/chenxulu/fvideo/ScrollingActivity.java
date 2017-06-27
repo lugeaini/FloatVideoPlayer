@@ -1,63 +1,49 @@
-package com.chenxulu.video.demo1;
+package com.chenxulu.fvideo;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.chenxulu.video.R;
-import com.chenxulu.video.widget.MyVideoLayout;
+import com.chenxulu.fvideo.widget.BaseVideoController;
+import com.chenxulu.fvideo.widget.MyVideoView;
 
-import java.util.ArrayList;
+public class ScrollingActivity extends AppCompatActivity implements BaseVideoController.VideoControllerListener {
+    String videoPath = "http://cdn.xnwimg.com/down/f:%7B26F3FBCF-1718-7B81-3791-D6AF9C06BD63%7D/ct:0/testmpg.mpg";
 
-public class Demo1Activity extends AppCompatActivity implements MyVideoController1.VideoControllerListener,
-        AdapterView.OnItemClickListener {
+    View topLayout;
+    CoordinatorLayout coordinatorLayout;
 
-    String videoPath = "http://file.ihimee.cn/videoForMobile/0/%E5%B0%91%E5%84%BF%E8%8B%B1%E8%AF%AD/%E8%8B%B1%E6%96%87%E8%A7%86%E9%A2%91/%E8%8B%B1%E6%96%87%E7%BB%98%E6%9C%AC/Cbeebies%E7%B3%BB%E5%88%97/006%20and%20a%20Bit.mp4";
-
-    private View topLayout;
-    private ListView listView;
-    private View headLayout;
-    private View headView;
-    private MyVideoLayout mVideoLayout;
-    private MyVideoController1 mVideoController;
-
-    private ArrayList<Integer> list;
+    MyVideoView myVideoView;
+    MyVideoController mVideoController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo1);
+        setContentView(R.layout.activity_scrolling);
 
         topLayout = findViewById(R.id.top_layout);
-        headLayout = LayoutInflater.from(this).inflate(R.layout.layout_header_view, null);
-        headView = headLayout.findViewById(R.id.head_video_view);
-        headView.setOnClickListener(new View.OnClickListener() {
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+
+        myVideoView = (MyVideoView) findViewById(R.id.my_video_view);
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        View hideView = findViewById(R.id.hide_view);
+        hideView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mVideoController.startPlay();
             }
         });
 
-        listView = (ListView) findViewById(R.id.list_view);
-        listView.addHeaderView(headLayout);
-        listView.setOnItemClickListener(this);
-
-        mVideoLayout = (MyVideoLayout) findViewById(R.id.video_layout);
-        mVideoController = new MyVideoController1(mVideoLayout, listView, headView);
+        mVideoController = new MyVideoController(myVideoView, hideView, appBarLayout);
         mVideoController.setVideoPath(videoPath);
-        mVideoController.setMyVideoLayoutListener(this);
 
-        list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(i);
-        }
-        listView.setAdapter(new MyAdapter1(list));
     }
 
     @Override
@@ -68,7 +54,7 @@ public class Demo1Activity extends AppCompatActivity implements MyVideoControlle
             getWindow().setAttributes(attr);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-            listView.setVisibility(View.GONE);
+            coordinatorLayout.setVisibility(View.GONE);
             topLayout.setVisibility(View.GONE);
         } else {
             WindowManager.LayoutParams attr = getWindow().getAttributes();
@@ -76,14 +62,9 @@ public class Demo1Activity extends AppCompatActivity implements MyVideoControlle
             getWindow().setAttributes(attr);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-            listView.setVisibility(View.VISIBLE);
+            coordinatorLayout.setVisibility(View.VISIBLE);
             topLayout.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override

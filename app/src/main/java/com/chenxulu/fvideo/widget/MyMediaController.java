@@ -1,12 +1,12 @@
-package com.chenxulu.video.widget;
+package com.chenxulu.fvideo.widget;
 
 import android.content.Context;
 import android.widget.MediaController;
 
-public class CustomMediaController extends MediaController {
+public class MyMediaController extends MediaController {
     private HideCallBack callBack;
 
-    public CustomMediaController(Context context) {
+    public MyMediaController(Context context) {
         super(context);
     }
 

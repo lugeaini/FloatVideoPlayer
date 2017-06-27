@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <VideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"/>
 
     <LinearLayout
         android:id="@+id/bottom_layout"
@@ -24,7 +27,7 @@
             android:layout_weight="1"
             android:progressDrawable="@drawable/btn_video_progressbar"
             android:thumb="@drawable/btn_video_progress_thumb"
-            android:thumbOffset="0.5dip" />
+            android:thumbOffset="0.5dip"/>
 
         <TextView
             android:id="@+id/time"
@@ -34,14 +37,14 @@
             android:maxLines="1"
             android:text="00:00/00:00"
             android:textColor="@android:color/white"
-            android:textSize="12.0sp" />
+            android:textSize="12.0sp"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:src="@drawable/btn_video_to_screen_selector"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <ImageView
@@ -49,20 +52,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:src="@drawable/btn_video_to_screen_selector" />
+        android:src="@drawable/btn_video_to_screen_selector"/>
 
     <ImageView
         android:id="@+id/close_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/btn_video_close_selector" />
+        android:src="@drawable/btn_video_close_selector"/>
 
     <ImageView
         android:id="@+id/play_view"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:src="@drawable/btn_video_start_selector" />
+        android:src="@drawable/btn_video_start_selector"/>
 
     <FrameLayout
         android:id="@+id/prepare_layout"
@@ -72,6 +75,6 @@
         <ProgressBar
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"/>
     </FrameLayout>
-</merge>
+</FrameLayout>

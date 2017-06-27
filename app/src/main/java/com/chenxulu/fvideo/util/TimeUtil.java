@@ -1,4 +1,4 @@
-package com.chenxulu.video.util;
+package com.chenxulu.fvideo.util;
 
 /**
  * Created by xulu on 16/7/14.

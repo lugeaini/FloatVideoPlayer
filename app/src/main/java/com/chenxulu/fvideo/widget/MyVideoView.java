@@ -1,10 +1,12 @@
-package com.chenxulu.video.widget;
+package com.chenxulu.fvideo.widget;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,14 +14,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.chenxulu.video.R;
-import com.chenxulu.video.util.TimeUtil;
+import com.chenxulu.fvideo.R;
+import com.chenxulu.fvideo.util.TimeUtil;
 
 /**
- * Created by xulu on 16/5/6.
+ * Created by xulu on 2017/6/26.
  */
-public class MyVideoLayout extends FrameLayout implements View.OnClickListener,
-        MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, CustomMediaController.HideCallBack {
+
+public class MyVideoView extends FrameLayout implements View.OnClickListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, MyMediaController.HideCallBack {
     private static final int VIDEO_STATE_IDLE = 0;
     private static final int VIDEO_STATE_PREPARE = 1;
     private static final int VIDEO_STATE_PLAYING = 2;
@@ -44,24 +46,27 @@ public class MyVideoLayout extends FrameLayout implements View.OnClickListener,
     private int videoState;
     private int screenType;
 
-    private MyVideoLayoutListener mListener;
-    private CustomMediaController mediaController;
+    private MyVideoViewListener mListener;
+    private MyMediaController mediaController;
 
-    public MyVideoLayout(Context context) {
+    public MyVideoView(@NonNull Context context) {
         this(context, null);
     }
 
-    public MyVideoLayout(Context context, AttributeSet attrs) {
-        this(context, null, 0);
+    public MyVideoView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public MyVideoLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public MyVideoView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         initView();
     }
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.layout_video, this);
+        View.inflate(getContext(), R.layout.layout_video, this);
+        if (isInEditMode()){
+            return;
+        }
 
         closeView = (ImageView) findViewById(R.id.close_view);
         closeView.setOnClickListener(this);
@@ -82,7 +87,7 @@ public class MyVideoLayout extends FrameLayout implements View.OnClickListener,
         videoView.setOnCompletionListener(this);
         videoView.setOnErrorListener(this);
 
-        mediaController = new CustomMediaController(getContext());
+        mediaController = new MyMediaController(getContext());
         mediaController.setHideCallBack(this);
         mediaController.setVisibility(GONE);
         videoView.setMediaController(mediaController);
@@ -301,7 +306,7 @@ public class MyVideoLayout extends FrameLayout implements View.OnClickListener,
     /**
      * set listener
      */
-    public void setMyVideoLayoutListener(MyVideoLayoutListener listener) {
+    public void setMyVideoLayoutListener(MyVideoViewListener listener) {
         this.mListener = listener;
     }
 }
