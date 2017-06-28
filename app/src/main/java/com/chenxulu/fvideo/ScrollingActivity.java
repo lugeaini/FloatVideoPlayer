@@ -14,7 +14,7 @@ import com.chenxulu.fvideo.widget.BaseVideoController;
 import com.chenxulu.fvideo.widget.MyVideoView;
 
 public class ScrollingActivity extends AppCompatActivity implements BaseVideoController.VideoControllerListener {
-    String videoPath = "http://cdn.xnwimg.com/down/f:%7B26F3FBCF-1718-7B81-3791-D6AF9C06BD63%7D/ct:0/testmpg.mpg";
+    String videoPath = "http://file.ihimee.cn/videoForMobile/0/%E5%B0%91%E5%84%BF%E8%8B%B1%E8%AF%AD/%E8%8B%B1%E6%96%87%E8%A7%86%E9%A2%91/%E8%8B%B1%E6%96%87%E7%BB%98%E6%9C%AC/Cbeebies%E7%B3%BB%E5%88%97/006%20and%20a%20Bit.mp4";
 
     View topLayout;
     CoordinatorLayout coordinatorLayout;

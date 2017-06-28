@@ -64,7 +64,7 @@ public class MyVideoView extends FrameLayout implements View.OnClickListener, Me
 
     private void initView() {
         View.inflate(getContext(), R.layout.layout_video, this);
-        if (isInEditMode()){
+        if (isInEditMode()) {
             return;
         }
 
@@ -167,7 +167,7 @@ public class MyVideoView extends FrameLayout implements View.OnClickListener, Me
         closeView.setVisibility(INVISIBLE);
         playView.setVisibility(INVISIBLE);
         bottomLayout.setVisibility(INVISIBLE);
-        prepareLayout.setVisibility(VISIBLE);
+        prepareLayout.setVisibility(INVISIBLE);
 
         videoState = VIDEO_STATE_IDLE;
     }
@@ -215,29 +215,15 @@ public class MyVideoView extends FrameLayout implements View.OnClickListener, Me
         }
     }
 
-    /**
-     * close on click
-     */
-    private void closeOnClick() {
-        stop();
-    }
-
-    /**
-     * full screen on click
-     */
-    private void fullScreenClick() {
-        if (mListener != null)
-            mListener.fullScreenChange();
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.close_view:
-                closeOnClick();
+                stop();
                 break;
             case R.id.full_screen_view:
-                fullScreenClick();
+                if (mListener != null)
+                    mListener.fullScreenChange();
                 break;
             case R.id.play_view:
                 playOnClick();
